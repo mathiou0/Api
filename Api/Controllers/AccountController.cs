@@ -19,7 +19,7 @@ using Api.Results;
 //testeteptwtjkewtjljwtj
 namespace Api.Controllers
 {
-    [Authorize]
+    
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
