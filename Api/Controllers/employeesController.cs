@@ -38,6 +38,18 @@ namespace Api.Controllers
             }
             return Ok(employee);
         }
+        // GET: api/employees/5
+        [ResponseType(typeof(employee))]
+        public async Task<IHttpActionResult> GetemployeeByName(string name)
+        {
+
+            employee employee = await db.employees.FindAsync(name);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+            return Ok(employee);
+        }
 
         // PUT: api/employees/5
         [ResponseType(typeof(void))]
@@ -78,15 +90,25 @@ namespace Api.Controllers
         [ResponseType(typeof(employee))]
         public async Task<IHttpActionResult> Postemployee(employee employee)
         {
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            db.employees.Add(employee);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = employee.employee_id }, employee);
+            DateTime dateValue=new DateTime();
+            if(!String.IsNullOrEmpty(employee.First_Name) && !String.IsNullOrEmpty(employee.Last_Name) && !String.IsNullOrEmpty(employee.Address) && DateTime.TryParse(employee.birthdate.ToString(), out dateValue))
+            { 
+                db.employees.Add(employee);
+                await db.SaveChangesAsync();
+                return CreatedAtRoute("DefaultApi", new { id = employee.employee_id }, employee);
+            }
+            else
+            {
+                
+                return ResponseMessage( Request.CreateResponse(
+                                            HttpStatusCode.BadRequest,"Validation Error"));
+            }
+            
         }
 
         // DELETE: api/employees/5

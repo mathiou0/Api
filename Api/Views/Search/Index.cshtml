@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Search for employee name</h4>
+            <div id="custom-search-input">
+                <div class="input-group col-md-6">
+                    <input type="text" class="form-control input-lg" placeholder="Search" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-lg" id="search" type="button">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="resultContainer">
+</div>
+
+<script type="text/javascript">
+    $("#search").click(function (e) {
+        var results = $("#resultContainer");
+        var text = $("#search").val();
+        results.empty();
+        $.get("http://localhost:44942/api/employees/"+text, function (data) {
+            results.append($(data).find("div:contains(" + text + ")"));
+        });
+    });
+</script>

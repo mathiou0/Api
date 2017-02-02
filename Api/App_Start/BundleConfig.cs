@@ -20,6 +20,10 @@ namespace Api
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/validate").Include(
+                     "~/Scripts/jquery.validate.js",
+                     "~/Scripts/jquery.validate.min.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
