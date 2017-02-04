@@ -38,18 +38,23 @@ namespace Api.Controllers
             }
             return Ok(employee);
         }
+
+
         // GET: api/employees/5
         [ResponseType(typeof(employee))]
         public async Task<IHttpActionResult> GetemployeeByName(string name)
         {
 
-            employee employee = await db.employees.FindAsync(name);
+            employee employee = await (db.employees.Where(u => u.First_Name == name).FirstOrDefaultAsync<employee>());
+
             if (employee == null)
             {
                 return NotFound();
             }
             return Ok(employee);
         }
+
+
 
         // PUT: api/employees/5
         [ResponseType(typeof(void))]
@@ -96,7 +101,7 @@ namespace Api.Controllers
                 return BadRequest(ModelState);
             }
             DateTime dateValue=new DateTime();
-            if(!String.IsNullOrEmpty(employee.First_Name) && !String.IsNullOrEmpty(employee.Last_Name) && !String.IsNullOrEmpty(employee.Address) && DateTime.TryParse(employee.birthdate.ToString(), out dateValue))
+            if(!String.IsNullOrEmpty(employee.First_Name) && !String.IsNullOrEmpty(employee.Last_Name) )
             { 
                 db.employees.Add(employee);
                 await db.SaveChangesAsync();
@@ -119,11 +124,14 @@ namespace Api.Controllers
             if (employee == null)
             {
                 return NotFound();
+
             }
-
+           
+            salary salary_move = await (db.salaries.Where(u => u.employee_id == employee.employee_id).FirstOrDefaultAsync<salary>()); ;
+            await db.Database.ExecuteSqlCommandAsync("Delete from salaries where employee_id="+ employee.employee_id);
             db.employees.Remove(employee);
+           
             await db.SaveChangesAsync();
-
             return Ok(employee);
         }
 

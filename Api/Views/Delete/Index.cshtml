@@ -1,0 +1,140 @@
+﻿
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View</h2>
+
+<div id="resultContainer">
+</div>
+<div class="table-responsive" style="height:400px;overflow:scroll">
+    <table class="table table-condensed table-striped table-bordered table-hover no-margin">
+        <thead>
+            <tr>
+                <th style="width:5%">
+                    <input class="no-margin" type="checkbox">
+                </th>
+                <th style="width:40%">First Name</th>
+                <th style="width:20%" class="hidden-phone">Last Name</th>
+                <th style="width:10%" class="hidden-phone">Address</th>
+                <th style="width:15%" class="hidden-phone">Date</th>
+                <th style="width:10%" class="hidden-phone">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="results" >
+        </tbody>
+    </table>
+</div>
+
+<div id="edit">
+    <div class="container" style="padding-top:100px;">
+       
+            <div class="form-group row required">
+                <label for="first_name" class="col-sm-2 col-form-label">First Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="first_name" placeholder="First Name" required>
+                </div>
+            </div>
+            <div class="form-group row required">
+                <label for="last_name" class="col-sm-2 col-form-label">Last Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="last_name" placeholder="Last Name" required>
+                </div>
+            </div>
+            <div class="form-group row required">
+                <label for="adress" class="col-sm-2 col-form-label">Address</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="adress" placeholder="Address" required>
+                </div>
+            </div>
+            <div class="form-group row required">
+                <label for="date-input" class="col-sm-2 col-form-label">Date</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="date" value="" id="date-input" required>
+                </div>
+            </div>
+            <div class="form-group row required">
+                <div class="offset-2 col-sm-6">
+                    <button id="edtBtn" class="btn btn-primary" onclick="Edit()">Add New Employee</button>
+                </div>
+            </div>
+       
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+         $('#edit').hide();
+        $('.table-responsive').hide();
+        var results = $("#resultContainer");
+        var text = $("#searchInput").val();
+        results.empty();
+
+        $('#results').empty();
+        $.get("http://localhost:44942/api/employees", function (data) {
+            var html = '';
+            for (var i = 0; i<data.length-1; i++) {
+                
+                html = "<tr id='" + data[i].employee_id + "'> \
+                            <td> \
+                             <input class='no-margin' type='checkbox'> </td>\
+                             <td><span class='first_name'>" + data[i].First_Name + "</span></td> \
+                             <td class='hidden-phone'><span class='last_name'>" + data[i].Last_Name + "</span></td> \
+                             <td class='hidden-phone'><span class='address'>" + data[i].Address + "</span></td>\
+                             <td class='hidden-phone'><span class='date'>" + data[i].birthdate + "</span></td> \
+                               <td class='hidden-phone'> \
+                                    <div class='btn-group'> \
+                                        <button data-toggle='dropdown' class='btn btn-xs dropdown-toggle' data-original-title='' title=''> \
+                                            Action \
+                                            <span class='caret'> \
+                                            </span> \
+                                        </button> \
+                                        <ul class='dropdown-menu pull-right'> \
+                                            <li> \
+                                                <a href='javscript:void(0);' onclick='Delete("+data[i].employee_id+");'>Delete</a> \
+                                            </li> \
+                                            <li> \
+                                                <a href='javscript:void(0);' onclick='Edit("+ data[i].employee_id + ");'>Edit</a> \
+                                            </li> \
+                                        </ul> \
+                                    </div> \
+                                </td>   \
+                                </tr>";
+                $('#results').append(html)
+            }
+            $('.table-responsive').show();
+        }).fail(function () {
+            $('.table-responsive').show();
+            var html = "<td> <input class='no-margin' type='checkbox'> </td><td> No Results </td><td> No Results </td><td> No Results </td><td> No Results </td>";
+            $('#results').append(html);
+       
+        });
+        });
+
+
+    function EditBtn(id) {
+
+    }
+
+    function Edit(id) {
+        $('#edit').show();
+        $('#first_name').val($('#'+id +' .first_name').text());
+        $('#last_name').val($('#' + id + ' .last_name').text());
+        $('#adress').val($('#' + id + ' .address').text());
+        $('#date').val($('#' + id + ' .date').text());
+        $("#edtBtn").attr("onclick", "EditBtn("+id+")");
+    }
+    function Delete(id) {
+
+        $.ajax({
+            type: "DELETE",
+            url: "http://localhost:44942/api/employees/"+id,
+            success: function (msg) {
+                alert("Data Deleted: ");
+                location.reload();
+            }
+        });
+    }
+    </script>
+}

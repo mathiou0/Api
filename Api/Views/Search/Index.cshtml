@@ -12,7 +12,7 @@
             <h4>Search for employee name</h4>
             <div id="custom-search-input">
                 <div class="input-group col-md-6">
-                    <input type="text" class="form-control input-lg" placeholder="Search" />
+                    <input type="text" id="searchInput" class="form-control input-lg" placeholder="Search" />
                     <span class="input-group-btn">
                         <button class="btn btn-info btn-lg" id="search" type="button">
                             <i class="glyphicon glyphicon-search"></i>
@@ -24,16 +24,54 @@
     </div>
 </div>
 
+
 <div id="resultContainer">
 </div>
 
+<div class="table-responsive" >
+    <table class="table table-condensed table-striped table-bordered table-hover no-margin">
+        <thead>
+            <tr>
+                <th style="width:5%">
+                    <input class="no-margin" type="checkbox">
+                </th>
+                <th style="width:40%">First Name</th>
+                <th style="width:20%" class="hidden-phone">Last Name</th>
+                <th style="width:10%" class="hidden-phone">Address</th>
+                <th style="width:15%" class="hidden-phone">Date</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="results">
+                
+             
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+@section scripts{
 <script type="text/javascript">
-    $("#search").click(function (e) {
-        var results = $("#resultContainer");
-        var text = $("#search").val();
-        results.empty();
-        $.get("http://localhost:44942/api/employees/"+text, function (data) {
-            results.append($(data).find("div:contains(" + text + ")"));
+    $(function () {
+        $('.table-responsive').hide();
+        $("#search").click(function (e) {
+            var results = $("#resultContainer");
+            var text = $("#searchInput").val();
+            results.empty();
+            $('#results').empty();
+            $.get("http://localhost:44942/api/employees/GetemployeeByName/" + text, function (data) {
+                console.log(data);
+                $('.table-responsive').show();
+                var html = "<td> <input class='no-margin' type='checkbox'> </td><td><span class='name'>" + data.First_Name + "</span></td><td class='hidden-phone'>" + data.Last_Name + "</td> <td class='hidden-phone'><span class='name'>" + data.Address + "</span></td><td class='hidden-phone'>" + data.birthdate + "</td>";
+                $('#results').append(html);
+            }).fail(function () {
+                $('.table-responsive').show();
+                var html = "<td> <input class='no-margin' type='checkbox'> </td><td> No Results </td><td> No Results </td><td> No Results </td><td> No Results </td>";
+                $('#results').append(html);
+            });
         });
     });
 </script>
+}
