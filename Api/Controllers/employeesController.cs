@@ -95,13 +95,14 @@ namespace Api.Controllers
         [ResponseType(typeof(employee))]
         public async Task<IHttpActionResult> Postemployee(employee employee)
         {
-
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            DateTime dateValue=new DateTime();
-            if(!String.IsNullOrEmpty(employee.First_Name) && !String.IsNullOrEmpty(employee.Last_Name) )
+            //employee.birthdate= JsonConvert.DeserializeObject<DateTime>(employee.birthdate.ToString());
+
+            if (!String.IsNullOrEmpty(employee.First_Name) && !String.IsNullOrEmpty(employee.Last_Name) )
             { 
                 db.employees.Add(employee);
                 await db.SaveChangesAsync();

@@ -113,8 +113,26 @@
         });
 
 
-    function EditBtn(id) {
+     function EditBtn(id) {
 
+        var employees = new Object();
+        employees.first_name = $('#first_name').val();
+        employees.last_name = $('#last_name').val();
+        employees.address = $('#adress').val();
+        employees.employee_id = id;
+
+        $.ajax({
+            url: 'http://localhost:44942/api/employees/'+id,
+            type: 'PUT',
+            dataType: 'json',
+            data: employees,
+            success: function (data, textStatus, xhr) {
+                console.log(data);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert('Error in Operation' + errorThrown);
+            }
+        });
     }
 
     function Edit(id) {
