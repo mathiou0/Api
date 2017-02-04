@@ -61,7 +61,7 @@
             var text = $("#searchInput").val();
             results.empty();
             $('#results').empty();
-            $.get("http://localhost:44942/api/employees/GetemployeeByName/" + text, function (data) {
+            $.get("/api/employees/GetemployeeByName/" + text, function (data) {
                 console.log(data);
                 $('.table-responsive').show();
                 var html = "<td> <input class='no-margin' type='checkbox'> </td><td><span class='name'>" + data.First_Name + "</span></td><td class='hidden-phone'>" + data.Last_Name + "</td> <td class='hidden-phone'><span class='name'>" + data.Address + "</span></td><td class='hidden-phone'>" + data.birthdate + "</td>";

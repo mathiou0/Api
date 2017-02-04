@@ -61,7 +61,7 @@ $(function()
         $("#employeeForm").validate();
 });
 function Post()
-{      
+{
         var employee = new Object();
         employee.first_name = $('#first_name').val();
         employee.last_name = $('#last_name').val();
@@ -69,12 +69,12 @@ function Post()
         employee.birthdate = $('#date-input').val();
         employee.salaries = new Object();
         employee.salaries.Salary1 = $('#salary').val();
-       
-       
+
+
         debugger;
         if ($('#first_name').val() != '' && $('#last_name').val() != '' && $('#adress').val() != '') {
             $.ajax({
-                url: 'http://localhost:44942/api/employees',
+                url: "/api/employees",
                 type: 'POST',
                 dataType: 'json',
                 data:employee,
