@@ -14,7 +14,7 @@ namespace Api
     
     public partial class salary
     {
-        public int Salary1 { get; set; }
+        public int Salary { get; set; }
         public Nullable<int> employee_id { get; set; }
     
         public virtual employee employee { get; set; }

@@ -20,9 +20,9 @@ namespace Api.Controllers
 
       
         // GET: api/employees
-        public IQueryable<employee> Getemployees()
+        public IEnumerable<employee> Getemployees()
         {
-            return db.employees;
+            return db.employees.ToArray();
         }
 
         
@@ -106,6 +106,7 @@ namespace Api.Controllers
             { 
                 db.employees.Add(employee);
                 await db.SaveChangesAsync();
+               
                 return CreatedAtRoute("DefaultApi", new { id = employee.employee_id }, employee);
             }
             else

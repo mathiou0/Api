@@ -43,9 +43,9 @@
                 </div>
             </div>
             <div class="form-group row required">
-                <label for="adress" class="col-sm-2 col-form-label">Address</label>
+                <label for="address" class="col-sm-2 col-form-label">Address</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="adress" placeholder="Address" required>
+                    <input type="text" class="form-control" id="address" placeholder="Address" required>
                 </div>
             </div>
             <div class="form-group row required">
@@ -72,17 +72,18 @@
         results.empty();
 
         $('#results').empty();
-        $.get("/api/employees", function (data) {
+            $.get("http://employeesservice.azurewebsites.net/api/employees", function (data) {
             var html = '';
             for (var i = 0; i<data.length-1; i++) {
-                
+                var birth = new Date(data[i].birthdate).toDateString();
+                //birth = birth.yyyymmdd();
                 html = "<tr id='" + data[i].employee_id + "'> \
                             <td> \
                              <input class='no-margin' type='checkbox'> </td>\
                              <td><span class='first_name'>" + data[i].First_Name + "</span></td> \
                              <td class='hidden-phone'><span class='last_name'>" + data[i].Last_Name + "</span></td> \
                              <td class='hidden-phone'><span class='address'>" + data[i].Address + "</span></td>\
-                             <td class='hidden-phone'><span class='date'>" + data[i].birthdate + "</span></td> \
+                             <td class='hidden-phone'><span class='date'>" + birth + "</span></td> \
                                <td class='hidden-phone'> \
                                     <div class='btn-group'> \
                                         <button data-toggle='dropdown' class='btn btn-xs dropdown-toggle' data-original-title='' title=''> \
@@ -115,39 +116,58 @@
 
      function EditBtn(id) {
 
-        var employees = new Object();
-        employees.first_name = $('#first_name').val();
-        employees.last_name = $('#last_name').val();
-        employees.address = $('#adress').val();
-        employees.employee_id = id;
+        var employee = new Object();
+        employee.first_name = $('#first_name').val();
+        employee.last_name = $('#last_name').val();
+        employee.address = $('#address').val();
+        employee.birthdate = $('#date-input').val();
+        employee.employee_id = id;
 
         $.ajax({
-            url: '/api/employees/'+id,
+            url: 'http://employeesservice.azurewebsites.net/api/employees/'+id,
             type: 'PUT',
             dataType: 'json',
-            data: employees,
+            data: employee,
             success: function (data, textStatus, xhr) {
-                console.log(data);
+                alert("Data Change: ");
+                location.reload();
             },
             error: function (xhr, textStatus, errorThrown) {
                 alert('Error in Operation' + errorThrown);
             }
         });
     }
-
+     function dateString2Date(dateString) {
+         var dt = dateString.split(/\-|\s/);
+         return new Date(dt.slice(0, 3).reverse().join('-') + ' ' + dt[3]);
+     }
     function Edit(id) {
         $('#edit').show();
         $('#first_name').val($('#'+id +' .first_name').text());
         $('#last_name').val($('#' + id + ' .last_name').text());
-        $('#adress').val($('#' + id + ' .address').text());
-        $('#date').val($('#' + id + ' .date').text());
+
+        $('#address').val($('#' + id + ' .address').text());
+        var date = new Date($('#' + id + ' .date').text());
+        console.log(date.yyyymmdd());
+        $('#date-input').val(date.yyyymmdd());
+      
         $("#edtBtn").attr("onclick", "EditBtn("+id+")");
     }
+
+    Date.prototype.yyyymmdd = function () {
+        var mm = this.getMonth() + 1; // getMonth() is zero-based
+        var dd = this.getDate();
+
+        return [this.getFullYear(),
+                '-'+(mm > 9 ? '' : '0') + mm,
+                '-'+(dd > 9 ? '' : '0') + dd
+        ].join('');
+    };
     function Delete(id) {
 
         $.ajax({
             type: "DELETE",
-            url: "/api/employees/"+id,
+            url: "http://employeesservice.azurewebsites.net/api/employees/" + id,
             success: function (msg) {
                 alert("Data Deleted: ");
                 location.reload();

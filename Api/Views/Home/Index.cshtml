@@ -65,10 +65,11 @@ function Post()
         var employee = new Object();
         employee.first_name = $('#first_name').val();
         employee.last_name = $('#last_name').val();
-        employee.adress = $('#adress').val();
+        employee.address = $('#adress').val();
+        var birth = new Date($('#date-input').val());
+
         employee.birthdate = $('#date-input').val();
-        employee.salaries = new Object();
-        employee.salaries.Salary1 = $('#salary').val();
+        
 
 
         debugger;
@@ -79,7 +80,7 @@ function Post()
                 dataType: 'json',
                 data:employee,
                 success: function (data, textStatus, xhr) {
-                    console.log(data);
+                    alert('Record Inserted')
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     alert('Error in Operation' + errorThrown);

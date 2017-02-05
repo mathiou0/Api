@@ -67,9 +67,9 @@ warning 6002: The table/view 'Employees_DB.dbo.salaries' does not have a primary
         </EntityType>
         <EntityType Name="salary">
           <Key>
-            <PropertyRef Name="Salary1" />
+            <PropertyRef Name="Salary" />
           </Key>
-          <Property Name="Salary1" Type="Int32" Nullable="false" />
+          <Property Name="Salary" Type="Int32" Nullable="false" />
           <Property Name="employee_id" Type="Int32" />
           <NavigationProperty Name="employee" Relationship="Self.FK__salaries__employ__145C0A3F" FromRole="salaries" ToRole="employees" />
         </EntityType>
@@ -113,7 +113,7 @@ warning 6002: The table/view 'Employees_DB.dbo.salaries' does not have a primary
           <EntitySetMapping Name="salaries">
             <EntityTypeMapping TypeName="Employees_DBModel.salary">
               <MappingFragment StoreEntitySet="salaries">
-                <ScalarProperty Name="Salary1" ColumnName="Salary" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
                 <ScalarProperty Name="employee_id" ColumnName="employee_id" />
               </MappingFragment>
             </EntityTypeMapping>
