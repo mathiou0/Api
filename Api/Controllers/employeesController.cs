@@ -45,7 +45,7 @@ namespace Api.Controllers
         public async Task<IHttpActionResult> GetemployeeByName(string name)
         {
 
-            employee employee = await (db.employees.Where(u => u.First_Name == name).FirstOrDefaultAsync<employee>());
+            employee employee = await (db.employees.Where(u => u.Last_Name == name).FirstOrDefaultAsync<employee>());
 
             if (employee == null)
             {

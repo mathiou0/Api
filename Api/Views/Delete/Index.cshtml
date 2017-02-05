@@ -72,7 +72,7 @@
         results.empty();
 
         $('#results').empty();
-            $.get("http://employeesservice.azurewebsites.net/api/employees", function (data) {
+            $.get("/api/employees", function (data) {
             var html = '';
             for (var i = 0; i<data.length-1; i++) {
                 var birth = new Date(data[i].birthdate).toDateString();
@@ -124,7 +124,7 @@
         employee.employee_id = id;
 
         $.ajax({
-            url: 'http://employeesservice.azurewebsites.net/api/employees/'+id,
+            url: '/api/employees/'+id,
             type: 'PUT',
             dataType: 'json',
             data: employee,
@@ -167,7 +167,7 @@
 
         $.ajax({
             type: "DELETE",
-            url: "http://employeesservice.azurewebsites.net/api/employees/" + id,
+            url: "/api/employees/" + id,
             success: function (msg) {
                 alert("Data Deleted: ");
                 location.reload();

@@ -50,8 +50,6 @@
     <script type="text/javascript">
 $(function()
 {
-      
-
         $("#employeeForm").validate();
 });
 function Post()
@@ -67,7 +65,7 @@ function Post()
         if ($('#first_name').val() != '' && $('#last_name').val() != '' && $('#adress').val() != '') {
             $.ajax({
                 async: false,
-                url: "http://employeesservice.azurewebsites.net/api/employees",
+                url: "/api/employees",
                 type: 'POST',
                 dataType: 'json',
                 data:employee,
