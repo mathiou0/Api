@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Employees_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Employees_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="employees">
           <Key>
             <PropertyRef Name="employee_id" />
@@ -15,16 +15,25 @@
           <Property Name="Last_Name" Type="varchar" MaxLength="100" />
           <Property Name="Address" Type="varchar" MaxLength="100" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'Employees_DB.dbo.salaries' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="salaries">
           <Key>
-            <PropertyRef Name="Salary" />
+            <PropertyRef Name="salary_id" />
           </Key>
-          <Property Name="Salary" Type="int" Nullable="false" />
+          <Property Name="salary_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="salary" Type="int" />
           <Property Name="employee_id" Type="int" />
         </EntityType>
-        <Association Name="FK__salaries__employ__145C0A3F">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK__salaries__employ__440B1D61">
           <End Role="employees" Type="Self.employees" Multiplicity="0..1" />
           <End Role="salaries" Type="Self.salaries" Multiplicity="*" />
           <ReferentialConstraint>
@@ -38,19 +47,14 @@ warning 6002: The table/view 'Employees_DB.dbo.salaries' does not have a primary
         </Association>
         <EntityContainer Name="Employees_DBModelStoreContainer">
           <EntitySet Name="employees" EntityType="Self.employees" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="salaries" EntityType="Self.salaries" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [salaries].[Salary] AS [Salary], 
-    [salaries].[employee_id] AS [employee_id]
-    FROM [dbo].[salaries] AS [salaries]</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="FK__salaries__employ__145C0A3F" Association="Self.FK__salaries__employ__145C0A3F">
+          <EntitySet Name="salaries" EntityType="Self.salaries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__salaries__employ__440B1D61" Association="Self.FK__salaries__employ__440B1D61">
             <End Role="employees" EntitySet="employees" />
             <End Role="salaries" EntitySet="salaries" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Employees_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -67,11 +71,12 @@ warning 6002: The table/view 'Employees_DB.dbo.salaries' does not have a primary
         </EntityType>
         <EntityType Name="salary">
           <Key>
-            <PropertyRef Name="Salary" />
+            <PropertyRef Name="salary_id" />
           </Key>
-          <Property Name="Salary" Type="Int32" Nullable="false" />
           <Property Name="employee_id" Type="Int32" />
           <NavigationProperty Name="employee" Relationship="Self.FK__salaries__employ__145C0A3F" FromRole="salaries" ToRole="employees" />
+          <Property Name="salary_id" Type="Int32" Nullable="false" />
+          <Property Name="salary1" Type="Int32" />
         </EntityType>
         <Association Name="FK__salaries__employ__145C0A3F">
           <End Role="employees" Type="Self.employee" Multiplicity="0..1" />
@@ -92,7 +97,18 @@ warning 6002: The table/view 'Employees_DB.dbo.salaries' does not have a primary
             <End Role="employees" EntitySet="employees" />
             <End Role="salaries" EntitySet="salaries" />
           </AssociationSet>
+          <EntitySet Name="sysdiagrams" EntityType="Employees_DBModel.sysdiagram" />
         </EntityContainer>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -113,8 +129,20 @@ warning 6002: The table/view 'Employees_DB.dbo.salaries' does not have a primary
           <EntitySetMapping Name="salaries">
             <EntityTypeMapping TypeName="Employees_DBModel.salary">
               <MappingFragment StoreEntitySet="salaries">
-                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="salary1" ColumnName="salary" />
+                <ScalarProperty Name="salary_id" ColumnName="salary_id" />
                 <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Employees_DBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

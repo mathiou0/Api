@@ -6,7 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="ec51655935d5493893a902f606123732" Name="Diagram1">
         <EntityTypeShape EntityType="Employees_DBModel.employee" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Employees_DBModel.salary" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Employees_DBModel.salary" Width="1.5" PointX="3.875" PointY="1.5" IsExpanded="true" />
         <AssociationConnector Association="Employees_DBModel.FK__salaries__employ__145C0A3F" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

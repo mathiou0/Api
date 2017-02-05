@@ -27,5 +27,6 @@ namespace Api
     
         public virtual DbSet<employee> employees { get; set; }
         public virtual DbSet<salary> salaries { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

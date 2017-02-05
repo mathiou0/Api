@@ -56,15 +56,14 @@ $(function()
 });
 function Post()
 {
-        var employee = new Object();
-        employee.first_name = $('#first_name').val();
-        employee.last_name = $('#last_name').val();
-        employee.address = $('#adress').val();
-        var birth = new Date($('#date-input').val());
+        var employee = {
+            first_name: $('#first_name').val(),
+            last_name: $('#last_name').val(),
+            address: $('#adress').val(),
+            birthdate:$('#date-input').val(),
+            salaries: [{ salary1: $('#salary').val() }]
+        };
 
-        employee.birthdate = $('#date-input').val();
-      
-        debugger;
         if ($('#first_name').val() != '' && $('#last_name').val() != '' && $('#adress').val() != '') {
             $.ajax({
                 async: false,

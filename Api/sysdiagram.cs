@@ -12,12 +12,12 @@ namespace Api
     using System;
     using System.Collections.Generic;
     
-    public partial class salary
+    public partial class sysdiagram
     {
-        public Nullable<int> employee_id { get; set; }
-        public int salary_id { get; set; }
-        public Nullable<int> salary1 { get; set; }
-    
-        public virtual employee employee { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }
