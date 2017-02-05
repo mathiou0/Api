@@ -50,13 +50,7 @@
     <script type="text/javascript">
 $(function()
 {
-        $.getJSON('/api/employees', function(contactsJsonPayload)
-        {
-            $(contactsJsonPayload).each(function(i, item)
-            {
-                $('#employees').append('<li>' + item.First_Name + '</li>');
-            });
-        });
+      
 
         $("#employeeForm").validate();
 });
@@ -69,20 +63,21 @@ function Post()
         var birth = new Date($('#date-input').val());
 
         employee.birthdate = $('#date-input').val();
-        
-
-
+      
         debugger;
         if ($('#first_name').val() != '' && $('#last_name').val() != '' && $('#adress').val() != '') {
             $.ajax({
-                url: "/api/employees",
+                async: false,
+                url: "http://employeesservice.azurewebsites.net/api/employees",
                 type: 'POST',
                 dataType: 'json',
                 data:employee,
                 success: function (data, textStatus, xhr) {
+                    
                     alert('Record Inserted')
                 },
                 error: function (xhr, textStatus, errorThrown) {
+                    
                     alert('Error in Operation' + errorThrown);
                 }
             });

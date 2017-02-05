@@ -95,7 +95,10 @@ namespace Api.Controllers
         [ResponseType(typeof(employee))]
         public async Task<IHttpActionResult> Postemployee(employee employee)
         {
-            
+            if(!employee.birthdate.HasValue)
+            {
+                employee.birthdate = DateTime.Today;
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
