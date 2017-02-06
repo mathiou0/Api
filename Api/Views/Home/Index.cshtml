@@ -7,53 +7,86 @@
 </style>
 
 <div class="container" style="padding-top:100px;">
-    <form id="employeeForm"  method="get" action="">
-        <div class="form-group row required">
-            <label for="first_name" class="col-sm-2 col-form-label">First Name</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="first_name" placeholder="First Name" required>
+    <form  class="cmxform" method="get" id="employeeForm" >
+        <fieldset>
+            <div class="form-group row required">
+                <label for="first_name" class="col-sm-2 col-form-label">First Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="first_name" required>
+                </div>
             </div>
-        </div>
-        <div class="form-group row required">
-            <label for="last_name" class="col-sm-2 col-form-label">Last Name</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="last_name" placeholder="Last Name" required>
+            <div class="form-group row required">
+                <label for="last_name" class="col-sm-2 col-form-label">Last Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="last_name" required>
+                </div>
             </div>
-        </div>
-        <div class="form-group row required">
-            <label for="adress" class="col-sm-2 col-form-label">Address</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="adress" placeholder="Address" required>
+            <div class="form-group row required">
+                <label for="adress" class="col-sm-2 col-form-label">Address</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="adress" required>
+                </div>
             </div>
-        </div>
-        <div class="form-group row required">
-            <label for="date-input" class="col-sm-2 col-form-label">Date</label>
-            <div class="col-sm-10">
-                <input class="form-control" type="date" value="" id="date-input" required>
+            <div class="form-group row required">
+                <label for="date-input" class="col-sm-2 col-form-label">Date</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="date" value="" id="date-input" required>
+                </div>
             </div>
-        </div>
-        <div class="form-group row required">
-                 <label for="salary" class="col-sm-2 col-form-label">Salary</label>
-            <div class="col-sm-10">
-                <input class="form-control" type="number" value="" id="salary" required>
+            <div class="form-group row required">
+                <label for="salary" class="col-sm-2 col-form-label">Salary</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="number" value="" id="salary" required>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group row required">
-            <div class="offset-2 col-sm-6">
-                <button  class="btn btn-primary" onclick="Post()">Add New Employee</button>
+            <div class="form-group row required">
+                <div class="offset-2 col-sm-6">
+                    <button class="btn btn-primary" onclick="Post()">Add New Employee</button>
+                </div>
             </div>
-        </div>
-    </form>
+            </fieldset>
+</form>
+
+
 </div>
 @section scripts{
     <script type="text/javascript">
-$(function()
-{
-        $("#employeeForm").validate();
+$().ready(function () {
+    jQuery.validator.setDefaults({
+        debug: true,
+        success: "valid"
+    });
+
+    $("#employeeForm").validate({
+
+                rules: {
+                    salary: {
+                        required: true
+                    },
+                    adress:{
+                        required: true
+                    },
+                    last_name: {
+                        required: true
+                    }
+                }
+            }
+        );
+
 });
+
 function Post()
 {
+        debugger;
+        var empty = $(this).parent().find("input").filter(function () {
+            return this.value === "";
+        });
+        if (empty.length) {
+            //At least one input is empty
+            alert('a');
+        }
+
         var employee = {
             first_name: $('#first_name').val(),
             last_name: $('#last_name').val(),
@@ -61,7 +94,6 @@ function Post()
             birthdate:$('#date-input').val(),
             salaries: [{ salary1: $('#salary').val() }]
         };
-
         if ($('#first_name').val() != '' && $('#last_name').val() != '' && $('#adress').val() != '') {
             $.ajax({
                 async: false,
@@ -81,5 +113,5 @@ function Post()
         }
 }
 
-    </script>
+</script>
 }
