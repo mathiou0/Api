@@ -78,13 +78,12 @@ $().ready(function () {
 
 function Post()
 {
-        debugger;
-        var empty = $(this).parent().find("input").filter(function () {
+        var empty = $('#employeeForm').parent().find("input").filter(function () {
             return this.value === "";
         });
         if (empty.length) {
-            //At least one input is empty
-            alert('a');
+           
+            return;
         }
 
         var employee = {
